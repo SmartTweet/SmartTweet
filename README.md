@@ -1,5 +1,9 @@
 # SmartTweet
 
+## Installation
+
+Please install requirements in your conda environment with the ** package-list.txt** file.
+
 ## Usage
 
-for starting the flask server, check you're in ***SmartTweet*** conda environment then use **server.bat**.
+For starting the flask server, check you're in ***SmartTweet*** conda environment then use **server.bat**.
