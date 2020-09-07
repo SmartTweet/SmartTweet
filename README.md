@@ -2,7 +2,7 @@
 
 ## Installation
 
-Please install requirements in your conda environment with the ** package-list.txt** file.
+Please install requirements in your conda environment with the **package-list.txt** file.
 
 ## Usage
 
