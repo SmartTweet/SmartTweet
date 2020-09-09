@@ -1,0 +1,5 @@
+class settings:
+    API_KEY = r"ielCOdUrB54K4vdAYn88sAMga"
+    API_SECRET_KEY = r"CPckeVKNpmWmnqFsPoj2zOzIHqPJsX299jcaRhvG45CGciOsqS"
+    ACCESS_TOKEN = r'1301429774846435328-yaGGWHJMFU0sgJHn6rad2oLctVX6di'
+    ACCESS_TOKEN_SECRET = r'svULWjOl1nqQ5tVPpaUf2M9xVUCiyXOdgWF7irpeIQcvf'
