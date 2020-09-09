@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Load required Bootstrap and BootstrapVue CSS -->
+    <link type="text/css" rel="stylesheet" href="https://unpkg.com/bootstrap/dist/css/bootstrap.min.css" />
+    <link type="text/css" rel="stylesheet" href="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.css" />
+    <!-- Load icon library -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+</head>
+
+</html>
+
+<body>
+    <div id="app">
+        <form class="form-inline" v-on:submit.prevent="search" novalidate>
+            <div class="input-group">
+                <input placeholder="Search hashtag" type="text" class="form-control" v-model="hashtag" required>
+                <div class="invalid-feedback">
+                    Please choose a research.
+                </div>
+                <button class="btn btn-primary" v-on:click="search"><i class="fa fa-search"></i></button>
+            </div>
+        </form>
+
+        <pie-chart @on-receive="update"></pie-chart>
+        <ol>
+            <li v-for="tweet in tweets">
+                {{ tweet }}
+            </li>
+        </ol>
+        {{ selectedSentiment }}
+    </div>
+
+    <!-- development version, includes helpful console warnings -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <!-- Load polyfills to support older browsers -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es2015%2CIntersectionObserver"
+        crossorigin="anonymous"></script>
+
+    <!-- Load Vue followed by BootstrapVue -->
+    <script src="https://unpkg.com/vue@latest/dist/vue.min.js"></script>
+    <script src="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.js"></script>
+
+    <!-- Load the following for BootstrapVueIcons support -->
+    <script src="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue-icons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
+    <script src="https://unpkg.com/vue-chartjs/dist/vue-chartjs.min.js"></script>
+
+    <script>
+        const PieChart = Vue.component('pie-chart', {
+            extends: VueChartJs.Pie,
+            data() {
+                return {
+                    values: [40, 39, 10]
+                }
+            },
+            mounted() {
+                this.renderChart({
+                    labels: ["Positive", "Neutral", "Negative"],
+                    datasets: [{
+                        label: 'Data One',
+                        backgroundColor: ['#89c402', '#0078d4', '#a51419'],
+                        data: this.values
+                    }]
+                },
+                    { responsive: true, maintainAspectRatio: false, onClick: this.handle })
+            },
+            methods: {
+                handle(point, event) {
+                    const item = event[0]
+                    this.$emit('on-receive', {
+                        index: item._index,
+                        backgroundColor: item._view.backgroundColor,
+                        value: this.values[item._index]
+                    })
+                }
+            }
+        })
+
+        new Vue({
+            el: '#app',
+            data() {
+                return {
+                    hashtag: '',
+                    positive: 0,
+                    neutral: 0,
+                    negative: 0,
+                    tweets: [
+                        { id: 1, sentiment: 'positive' },
+                        { id: 2, sentiment: 'positive' },
+                        { id: 3, sentiment: 'neutral' },
+                        { id: 4, sentiment: 'negative' },
+                    ],
+                    selectedSentiment: {}
+                }
+            },
+            components: {
+                'pie-chart': PieChart
+            },
+            methods: {
+                search: function (event) {
+                    axios
+                        // https://api.coindesk.com/v1/bpi/currentprice.json
+                        // https://localhost:5000/
+                        .get('https://localhost:5000/', {
+                            params: {
+                                hashtag: this.hashtag
+                            }
+                        })
+                        .then(response => {
+                            this.tweets = response
+                            var groups = {};
+                            for (var i = 0; i < tweets.length; i++) {
+                                var groupSentiment = tweets[i].group
+                                switch (groupSentiment) {
+                                    case 'positive':
+                                        this.positive++
+                                        break
+                                    case 'neutral':
+                                        this.neutral++
+                                        break
+                                    case 'negative':
+                                        this.negative++
+                                        break;
+                                    default:
+                                        console.log(`Sorry, unknown sentiment: `, groupSentiment);
+                                }
+                            }
+                            tweets = [];
+                            for (var groupSentiment in groups) {
+                                tweets.push({ group: groupSentiment, color: groups[groupName] })
+                            }
+                        })
+
+                },
+                update(data) {
+                    this.selectedSentiment = data
+                }
+            }
+        })
+    </script>
+</body>
