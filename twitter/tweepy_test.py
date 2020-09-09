@@ -1,7 +1,8 @@
 import tweepy
-from settings import settings
+import twitter
 
-auth = tweepy.OAuthHandler(settings.CONSUMER_KEY, settings.CONSUMER_SECRET)
+
+auth = tweepy.OAuthHandler(twitter.settings.CONSUMER_KEY, twitter.settings.CONSUMER_SECRET)
 
 # access_token = r"application"
 # access_token_secret = r"code de l'application"
@@ -18,7 +19,8 @@ api = tweepy.API(auth)
 # 'message': 'Your credentials do not allow access to this resource', 'code': 220
 # Echec car on est pas identifié comme application
 
-tweets = api.search(q="Code Lyoko", result_type="recent", count=1)
+tweets = api.search(q="#NVIDIA", result_type="recent", count=1)
 for tweet in tweets:
     print(tweet)
+    print("\n\n\n\n")
 print(len(tweets))
