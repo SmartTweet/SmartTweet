@@ -1,17 +1,13 @@
-
-
-
 import requests
 # pprint is used to format the JSON response
 from pprint import pprint
-import os
 
 
 # Créez des variables pour le point de terminaison et la clé d’abonnement Azure de votre ressource.
 subscription_key = "8ada2411512a4dadb2add92f6e63291b"
 endpoint = "https://cs-groupe-deux.cognitiveservices.azure.com/"
 
-language_api_url = endpoint + "/text/analytics/v3.0/languages"  
+language_api_url = endpoint + "/text/analytics/v3.0/languages"
 
 # Pour détecter le sentiment (positif ou négatif) d’un jeu de documents,
 # ajoutez /text/analytics/v3.0/sentiment au point de terminaison de base d’Analyse de texte pour former

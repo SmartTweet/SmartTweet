@@ -1,13 +1,16 @@
 import twitter
+import azure
 
-tweets_list = twitter.twitter_API.recherche("Cofee")
 
-tweets_dict = dict()
-for tweet in tweets_list:
-    tweets_dict['id'] = tweet[0]
-    tweets_dict['lang'] = tweet[1]
-    tweets_dict['text'] = tweet[2]
+def get_sentiments(ma_recherche):
+    tweets_list = twitter.twitter_api.recherche(ma_recherche)
 
-for t_text in tweets_text:
-    print(t_text)
+    documents = azure.azure_api.from_tweetlist_to_documents(tweets_list)
+    azure_response_json = azure.azure_api.sentiments(documents)
 
+    return azure_response_json
+
+
+if __name__ == "__main__":
+    response = get_sentiments("Cofee")
+    print(response)

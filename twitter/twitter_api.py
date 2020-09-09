@@ -2,21 +2,25 @@ import tweepy
 import twitter
 
 
-class twitter_API:
-    @staticmethod
-    def recherche(ma_recherche: str):
-        auth = tweepy.OAuthHandler(
+class twitter_api:
+    api = tweepy.API(tweepy.OAuthHandler(
             twitter.settings.CONSUMER_KEY,
             twitter.settings.CONSUMER_SECRET
         )
-        api = tweepy.API(auth)
+    )
 
-        tweets = api.search(q=ma_recherche, count=10)
-        return [[tweet.id, tweet.metadata['iso_language_code'], tweet.text] for tweet in tweets]
+    @classmethod
+    def recherche(cls, ma_recherche: str):
+        tweets = cls.api.search(q=ma_recherche + " -RT", count=10)
+        # "-RT" should remove retweets (i'm not sure)
+        return [
+            [tweet.id, tweet.metadata['iso_language_code'], tweet.text]
+            for tweet in tweets
+        ]
 
 
 if __name__ == "__main__":
-    tweets_text = twitter_API.recherche("Cofee")
+    tweets_text = twitter_api.recherche("Cofee")
 
     for tweet in tweets_text:
         print(tweet)
