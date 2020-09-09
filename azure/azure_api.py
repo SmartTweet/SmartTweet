@@ -8,7 +8,7 @@ class azure_api:
     __sentiment_url = __endpoint + "/text/analytics/v3.0/sentiment"
 
     @staticmethod
-    def from_tweetlist_to_documents(tweets_list):
+    def from_tweetlist_to_documents(tweets_list: list):
         document_list = []
         for tweet in tweets_list:
             document_list.append({
@@ -19,8 +19,23 @@ class azure_api:
 
         return {"documents": document_list}
 
+    @staticmethod
+    def filter_language(documents: dict):
+        filtered_list = []
+        supported_languages = [
+            "de", "en", "es", "fr", "it",
+            "ja", "ko", "nl", "no", "pt-PT",
+            "tr", "zh-Hans", "zh-Hant"
+        ]
+
+        for tweet in documents['documents']:
+            if any(lang in tweet['language'] for lang in supported_languages):
+                filtered_list.append(tweet)
+
+        return {"documents": filtered_list}
+
     @classmethod
-    def sentiments(cls, documents):
+    def sentiments(cls, documents: dict):
         """sentiments method takes documents variable as the following structure:
 
         {"documents": [
