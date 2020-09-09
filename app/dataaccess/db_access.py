@@ -1,101 +1,39 @@
-import psycopg2
-import sys
-import json
+# coding=utf-8
 
-"""connexion à la base de données
-"""
-def db_connexion(database):
-    con = psycopg2.connect("dbname={} user={} host={} password={}" .format(
-        database['db'],
-        database['user'],
-        database['host'],
-        database['password']
-    ))
+from sqlalchemy import create_engine
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
 
-    return con
 
-"""requete envoyer à la base de données
-"""
-def query(sql, params, database):
-    try:
-        con = db_connexion(database)
+class Db_Access():
 
-        cur = con.cursor()
-        cur.execute(sql, params)
-        rows = cur.fetchall()
-    except Exception as e:
-        print(e)
-    finally:
-        if con:
-            con.close()
-    return rows
+    ENGINE = create_engine('postgresql://rjrfriyt:Yzslx9R-wgaR1-pv0FNxiYzpKDjXb62K@lallah.db.elephantsql.com/rjrfriyt')
+    SESSION = sessionmaker(bind=ENGINE)
+    BASE = declarative_base()
 
-"""construction d'un dictionnaire
-"""
-def dict(sql, params, database):
-    return query(sql, params, database)
+    '''
+    insert new tweets
+    '''
+    def insert_tweet(self, data_list):
+        session = self.SESSION()
+        for data in data_list:
+            session.add(data)            
+        session.commit()
+        session.close()
 
-"""retourner le resultat en format json
-"""
-def json_mode(query, params, database):
-    return json.dumps(query(query, params, database))
+    
+    '''
+    return all tweets
+    '''
+    def get_all(self, table):
+        session = self.SESSION()
+        return session.query(table).all()
 
-"""recuperer un seul enregistrement
-"""
-def scalar(query, params, database):
-    try:
-        con = db_connexion(database)
 
-        cur = con.cursor()
-        cur.execute(query, params)
-        rows = cur.fetchone()[0]
-    except Exception as e:
-        print(e)
-    finally:
-        if con:
-            con.close()
-    return rows
-
-"""inserer la ligne dans la base de données
-"""
-def empty(query, params, database):
-    last_id = None
-    row_count = None
-    try:
-        con = db_connexion(database)
-
-        cur = con.cursor()
-        cur.execute(query, params)
-        last_id = cur.lastrowid
-        row_count = cur.rowcount
-        con.commit()
-    except Exception as e:
-        print(e)
-        pass
-    finally:
-        if con:
-            con.close()
-    return last_id, row_count
-
-"""executer plusieurs requettes
-"""
-def transaction(queries, database):
-    result = []
-    try:
-        con = db_connexion(database)
-        cur = con.cursor()
-        for query in queries:
-            print(query)
-            sql, params = query
-            cur.execute(sql, params)
-            result.append((cur.lastrowid, cur.rowcount))
-        con.commit()
-    except Exception as e:
-        print(e)
-        if con:
-            con.rollback()
-    finally:
-        if con:
-            con.close()
-
-    return result
+    '''
+    return list of tweets filtered by hashtag
+    '''
+    def get_tweets_by_hashtag(self, hashtag):        
+        from model.tweet import Tweet 
+        session = self.SESSION()
+        return session.query(Tweet).filter(Tweet.hashtag == hashtag).all()
