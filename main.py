@@ -1,34 +1,24 @@
 import twitter
 import azure
-from analysis import analysis
+from app.model.tweet import Tweet
+from app.data_access.db_access import Db_Access
 
 
-def get_analyses(ma_recherche: str):
-    tweets_list = twitter.twitter_api.recherche(ma_recherche)
+def get_analyses(ma_recherche: str, nbr_result: int):
+    raw_tweet_list = twitter.twitter_api.recherche(ma_recherche, nbr_result)
 
-    documents = azure.azure_api.from_tweetlist_to_documents(tweets_list)
+    tweet_list = Tweet.from_raw_list(raw_tweet_list, ma_recherche)
+
+    documents = azure.azure_api.from_tweetlist_to_documents(frozenset(tweet_list))
     azure_json = azure.azure_api.sentiments(documents)
 
-    print(len(azure_json['documents']), '\n')
-    for sentiment in azure_json['documents']:
+    tweet_list = Tweet.from_azure_response(tweet_list, azure_json)
 
-        total_text = str()
-        for sentence in sentiment['sentences']:
-            total_text += sentence['text']
-
-        analysis_list.append(
-            analysis(
-                sentiment['id'],
-                sentiment['sentiment'],
-                sentiment['confidenceScores'][sentiment['sentiment']],
-                total_text,
-                ma_recherche
-            )
-        )
-
-    return analysis_list
+    return tweet_list
 
 
 if __name__ == "__main__":
-    liste_analyses = get_analyses("#PNL")
-    print(list(map(str, liste_analyses)))
+    tweet_list = get_analyses("#PNL", 3)
+
+    db = Db_Access()
+    db.insert_tweet(tweet_list)

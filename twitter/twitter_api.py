@@ -10,17 +10,6 @@ class twitter_api:
     )
 
     @classmethod
-    def recherche(cls, ma_recherche: str):
-        tweets = cls.api.search(q=ma_recherche + " -RT", count=10)
-        # "-RT" should remove retweets (i'm not sure)
-        return [
-            [tweet.id, tweet.metadata['iso_language_code'], tweet.text]
-            for tweet in tweets
-        ]
-
-
-if __name__ == "__main__":
-    tweets_text = twitter_api.recherche("#NINTENDO")
-
-    for tweet in tweets_text:
-        print(tweet)
+    def recherche(cls, ma_recherche: str, nbr_result: int):
+        return cls.api.search(q=ma_recherche + " -RT", count=nbr_result)
+        # "-RT" should remove retweets (i'm not sure

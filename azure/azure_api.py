@@ -1,4 +1,5 @@
 import requests
+from app.model.tweet import Tweet
 
 
 class azure_api:
@@ -8,30 +9,16 @@ class azure_api:
     __sentiment_url = __endpoint + "/text/analytics/v3.0/sentiment"
 
     @staticmethod
-    def from_tweetlist_to_documents(tweets_list: list):
+    def from_tweetlist_to_documents(tweets_list):
         document_list = []
         for tweet in tweets_list:
             document_list.append({
-                'id': tweet[0],
-                'language': tweet[1],
-                'text': tweet[2]
+                'id': tweet.id_tweet_twitter,
+                'language': tweet.language,
+                'text': tweet.content
             })
 
-        documents = filter(azure_api.__filter_language, {"documents": document_list})
-        return documents
-
-    @staticmethod
-    def __filter_language(tweet: dict):
-        supported_languages = [
-            "de", "en", "es", "fr", "it",
-            "ja", "ko", "nl", "no", "pt-PT",
-            "tr", "zh-Hans", "zh-Hant"
-        ]
-
-        if any(lang in tweet['language'] for lang in supported_languages):
-            return True
-        else:
-            return False
+        return {"documents": document_list}
 
     @classmethod
     def sentiments(cls, documents: dict):
