@@ -17,22 +17,21 @@ class azure_api:
                 'text': tweet[2]
             })
 
-        return {"documents": document_list}
+        documents = filter(azure_api.__filter_language, {"documents": document_list})
+        return documents
 
     @staticmethod
-    def filter_language(documents: dict):
-        filtered_list = []
+    def __filter_language(tweet: dict):
         supported_languages = [
             "de", "en", "es", "fr", "it",
             "ja", "ko", "nl", "no", "pt-PT",
             "tr", "zh-Hans", "zh-Hant"
         ]
 
-        for tweet in documents['documents']:
-            if any(lang in tweet['language'] for lang in supported_languages):
-                filtered_list.append(tweet)
-
-        return {"documents": filtered_list}
+        if any(lang in tweet['language'] for lang in supported_languages):
+            return True
+        else:
+            return False
 
     @classmethod
     def sentiments(cls, documents: dict):
@@ -40,13 +39,13 @@ class azure_api:
 
         {"documents": [
             {"id": "1", "language": "en",
-                "text": "I really enjoy the new XBox One S. It has a clean look, it has 4K/HDR resolution and it is affordable."},
+                "text": "I really enjoy the new XBox One S."},
             {"id": "2", "language": "es",
-                "text": "Este ha sido un dia terrible, llegué tarde al trabajo debido a un accidente automobilistico."}
+                "text": "Este ha sido un dia terrible, llegué tarde ..."}
         ]}
 
         Args:
-            documents (dictionnary): azure document structure for sentiments analysis
+            documents (dictionnary): azure structure for sentiments analysis
 
         Returns:
             str: result of the azure sentiments analysis as json string

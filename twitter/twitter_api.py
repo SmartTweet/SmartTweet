@@ -20,7 +20,7 @@ class twitter_api:
 
 
 if __name__ == "__main__":
-    tweets_text = twitter_api.recherche("Cofee")
+    tweets_text = twitter_api.recherche("#NINTENDO")
 
     for tweet in tweets_text:
         print(tweet)
