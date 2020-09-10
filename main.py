@@ -9,6 +9,8 @@ def get_analyses(ma_recherche: str, nbr_result: int):
 
     tweet_list = Tweet.from_raw_list(raw_tweet_list, ma_recherche)
 
+    print(len(tweet_list))
+
     documents = azure.azure_api.from_tweetlist_to_documents(frozenset(tweet_list))
     azure_json = azure.azure_api.sentiments(documents)
 
@@ -18,7 +20,6 @@ def get_analyses(ma_recherche: str, nbr_result: int):
 
 
 if __name__ == "__main__":
-    tweet_list = get_analyses("#PNL", 3)
+    tweet_list = get_analyses("#PNL", 11)
 
-    db = Db_Access()
-    db.insert_tweet(tweet_list)
+    Db_Access.insert_tweet(tweet_list)

@@ -7,15 +7,16 @@ from sqlalchemy.orm import sessionmaker
 
 class Db_Access():
 
-    ENGINE = create_engine('postgresql://rjrfriyt:Yzslx9R-wgaR1-pv0FNxiYzpKDjXb62K@lallah.db.elephantsql.com/rjrfriyt')
-    SESSION = sessionmaker(bind=ENGINE)
+    __ENGINE = create_engine('postgresql://rjrfriyt:Yzslx9R-wgaR1-pv0FNxiYzpKDjXb62K@lallah.db.elephantsql.com/rjrfriyt')
+    __SESSION = sessionmaker(bind=__ENGINE)
     BASE = declarative_base()
 
     '''
     insert new tweets
     '''
-    def insert_tweet(self, data_list):
-        session = self.SESSION()
+    @classmethod
+    def insert_tweet(cls, data_list):
+        session = cls.__SESSION()
         for data in data_list:
             session.add(data)
         session.commit()
@@ -24,14 +25,16 @@ class Db_Access():
     '''
     return all tweets
     '''
-    def get_all(self, table):
-        session = self.SESSION()
-        return session.query(table).all()
+    @classmethod
+    def get_all(cls):
+        from app.model.tweet import Tweet
+        session = cls.__SESSION()
+        return session.query(Tweet).all()
 
     '''
     return list of tweets filtered by hashtag
     '''
-    def get_tweets_by_hashtag(self, hashtag):
-        from model.tweet import Tweet
-        session = self.SESSION()
+    @classmethod
+    def get_tweets_by_hashtag(cls, hashtag):
+        session = cls.__SESSION()
         return session.query(Tweet).filter(Tweet.hashtag == hashtag).all()

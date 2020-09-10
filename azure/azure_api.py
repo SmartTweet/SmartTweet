@@ -24,13 +24,6 @@ class azure_api:
     def sentiments(cls, documents: dict):
         """sentiments method takes documents variable as the following structure:
 
-        {"documents": [
-            {"id": "1", "language": "en",
-                "text": "I really enjoy the new XBox One S."},
-            {"id": "2", "language": "es",
-                "text": "Este ha sido un dia terrible, llegué tarde ..."}
-        ]}
-
         Args:
             documents (dictionnary): azure structure for sentiments analysis
 
@@ -43,4 +36,5 @@ class azure_api:
             headers=headers,
             json=documents
         )
+
         return response.json()
