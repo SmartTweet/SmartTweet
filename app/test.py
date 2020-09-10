@@ -16,7 +16,7 @@ tweet_list.append(Tweet('Y9SD8DS0D', 'tweet 2', 'neutral', 0.5, 'Samsung'))
 tweet_list.append(Tweet('2LSD9809S', 'tweet 3', 'negative', 0.2, 'Samsung'))
 
 # insert tweet list
-db.insert_tweet(tweet_list)
+#db.insert_tweet(tweet_list)
 
 # get all tweets
 tweets = db.get_all(Tweet)
