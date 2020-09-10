@@ -1,0 +1,9 @@
+class Key:
+    API_TWITTER_KEYS = r"REzaALc7PV6oMV1DVBpZ5lsJK"
+    API_TWITTER_SECRET_KEYS = r"GUWv3pSV6fpYmHMiY3YDz9lKntVkJWlFCFbL4hc2HDMzXXfql7"
+    API_TWITTER_TOKEN = r"1301868943423025153-2LHvUL2wZVpLxzq3OSpL7uqzy1dWtE"
+    API_TWITTER_TOKEN_SECRET = r"qmNYPf84Lhi8MPARBofBEhrznkq1LAf9E9q0ltTvcDJR5"
+    
+    AZURE_ENDPOINT = r"https://cs-groupe-deux.cognitiveservices.azure.com/"
+    API_KEYS_AZURE = r"8ada2411512a4dadb2add92f6e63291b"
+
