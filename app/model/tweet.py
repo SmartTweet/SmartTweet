@@ -1,9 +1,9 @@
-from sqlalchemy import Column, String, Integer, Date, Boolean, ForeignKey, Float, Date
-from app.data_access.db_access import Db_Access
-from sqlalchemy.orm import relationship, backref
+from sqlalchemy import Column, String, Integer, Date, Float
+from sqlalchemy.ext.declarative import declarative_base
+import app.data_access as dal
 
 
-class Tweet(Db_Access.BASE):
+class Tweet(declarative_base()):
 
     __tablename__ = 'tweet'
 

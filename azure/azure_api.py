@@ -1,5 +1,4 @@
 import requests
-from app.model.tweet import Tweet
 
 
 class azure_api:

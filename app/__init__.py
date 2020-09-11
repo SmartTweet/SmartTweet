@@ -1,5 +1,5 @@
 from flask import Flask, render_template, jsonify
-from app.data_access.db_access import Db_Access
+import app.data_access as dal
 
 
 def create_app():
@@ -22,13 +22,17 @@ def create_app():
     @app.route('/tweet/<hashtag>')
     def tweet(hashtag: str = 'all'):
         if hashtag == 'all':
-            print(type(Db_Access.get_all()))
-            print(type(Db_Access.get_all()[0]))
-            return jsonify([
-                tweet.__dict__ for tweet in Db_Access.get_all()
-            ])
+
+            tweet_list = [tweet.__dict__ for tweet in dal.Db_Access.get_all()]
+            for tweet in tweet_list:
+                del tweet['_sa_instance_state']
+            return jsonify(tweet_list)
+
         else:
-            return jsonify([
-                tweet.__dict__ for tweet in Db_Access.get_tweets_by_hashtag(hashtag)
-            ])
+
+            tweet_list = [tweet.__dict__ for tweet in dal.Db_Access.get_tweets_by_hashtag(hashtag)]
+            for tweet in tweet_list:
+                del tweet['_sa_instance_state']
+            return jsonify(tweet_list)
+
     return app
