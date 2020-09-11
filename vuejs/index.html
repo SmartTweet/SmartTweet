@@ -21,10 +21,13 @@
         </form>
 
         <pie-chart ref="chart"></pie-chart>
-        <div v-if="tweets">
-            <h2>{{ SENTIMENT[selectedSentiment] | toUpperCase }} TWEETS</h2>
-            <article v-for="tweet in tweets">{{ tweet }}</article>
-        </div>
+        <table v-if="tweets">
+            <h2 v-if="tweets">{{ SENTIMENT[selectedSentiment] | toUpperCase }} TWEETS</h2>
+            <tr v-for="tweet in tweets">
+                <td>{{ tweet.content }}</td>
+                <td>{{ tweet.confident_level | toPercent }}%</td>
+            </tr>
+        </table>
     </div>
 
     <!-- development version, includes helpful console warnings -->
@@ -58,7 +61,7 @@
                     hashtag: '',
                     selectedSentiment: null, // 0: positive, 1: neutral, 2: negative, 3:mixed
                     SENTIMENT: [
-                        'positive',
+                        'positif',
                         'neutral',
                         'negative',
                         'mixed'
@@ -71,32 +74,33 @@
                 'pie-chart': PieChart
             },
             filters: {
-                toUpperCase: function (value) {
-                    if (!value) return ''
-                    value = value.toString()
-                    return value.toUpperCase()
+                toUpperCase: function (val) {
+                    if (!val) return ''
+                    val = val.toString()
+                    return val.toUpperCase()
+                },
+                toPercent: function(val) {
+                    if (!val) return ''
+                    return val * 100
                 }
             },
             methods: {
                 search: function (event) {
                     axios
-                        .get('http://localhost:5000', {
-                            params: {
-                                hashtag: this.hashtag
-                            }
-                        })
+                        .get('http://localhost:5000/api/tweet/' + this.hashtag)
                         .then(response => {
-                            const responseData = response.data.documents
+                            const responseData = response.data
                             this.notFilteredTweets = responseData
                             counts = _.countBy(responseData, 'sentiment')
                             console.log(responseData)
+                            console.log(counts)
 
                             this.$refs.chart.renderChart({
                                 labels: ["Positive", "Neutral", "Negative", "Mixed"],
                                 datasets: [{
                                     label: 'Tweets sentiment',
                                     backgroundColor: ['#89c402', '#0078d4', '#a51419', '#976C0E'],
-                                    data: [counts.positive, counts.neutral, counts.negative, counts.mixed]
+                                    data: [counts.positif, counts.neutral, counts.negative, counts.mixed]
                                 }]
                             }, { responsive: true, maintainAspectRatio: false, onClick: this.update })
                             console.log(counts)

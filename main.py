@@ -1,37 +1,25 @@
-from flask import Flask, request
-from flask_cors import CORS
-
 import twitter
 import azure
+from app.model.tweet import Tweet
+from app.data_access.db_access import Db_Access
 
 
-def get_sentiments(ma_recherche: str):
-    tweets_list = twitter.twitter_api.recherche(ma_recherche)
+def get_analyses(ma_recherche: str, nbr_result: int):
+    raw_tweet_list = twitter.twitter_api.recherche(ma_recherche, nbr_result)
 
-    documents = azure.azure_api.from_tweetlist_to_documents(tweets_list)
-    documents = azure.azure_api.filter_language(documents)
+    tweet_list = Tweet.from_raw_list(raw_tweet_list, ma_recherche)
+
+    print(len(tweet_list))
+
+    documents = azure.azure_api.from_tweetlist_to_documents(frozenset(tweet_list))
     azure_json = azure.azure_api.sentiments(documents)
 
-    # print(azure_json)
-    return azure_json
+    tweet_list = Tweet.from_azure_response(tweet_list, azure_json)
 
-
-def create_app():
-    app = Flask(__name__)
-    CORS(app)
-
-    @app.route('/')
-    def homepage():
-        hashtag = request.args.get('hashtag')
-
-        if hashtag is not None:
-            return get_sentiments(hashtag)
-
-        return {}
-
-    return app
+    return tweet_list
 
 
 if __name__ == "__main__":
-    response = get_sentiments("#PNL")
-    print(response)
+    tweet_list = get_analyses("#PNL", 11)
+
+    Db_Access.insert_tweet(tweet_list)
