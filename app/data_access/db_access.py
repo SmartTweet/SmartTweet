@@ -8,7 +8,7 @@ import app.model as model
 class Db_Access():
 
     __ENGINE = create_engine('postgresql://rjrfriyt:Yzslx9R-wgaR1-pv0FNxiYzpKDjXb62K@lallah.db.elephantsql.com/rjrfriyt')
-    __SESSION = sessionmaker(bind=__ENGINE)
+    __SESSION = sessionmaker(bind=__ENGINE)        
 
     '''
     insert new tweets

@@ -18,21 +18,38 @@ def create_app():
     def hello(name='diallo'):
         return render_template('hello.html', name=name)
 
-    @app.route('/tweet/')
-    @app.route('/tweet/<hashtag>')
-    def tweet(hashtag: str = 'all'):
-        if hashtag == 'all':
+    @app.route('/tweet/', method='GET')
+    def get_all_tweet():
+        tweet_list = [tweet.__dict__ for tweet in dal.Db_Access.get_all()]
+        for tweet in tweet_list:
+            del tweet['_sa_instance_state']
+        return jsonify(tweet_list)
 
-            tweet_list = [tweet.__dict__ for tweet in dal.Db_Access.get_all()]
-            for tweet in tweet_list:
-                del tweet['_sa_instance_state']
-            return jsonify(tweet_list)
+    """
+    Problème: une url de type /tweet/#NVIDIA sera coupée au niveau du "#"
+        Donc impossible d'utiliser '/tweet/<hashtag>'
+    """
+    # @app.route('/tweet/<hashtag>', method='GET')
+    # def get_tweet(hashtag):
 
-        else:
+    #     if not hashtag:
+    #         return []
 
-            tweet_list = [tweet.__dict__ for tweet in dal.Db_Access.get_tweets_by_hashtag(hashtag)]
-            for tweet in tweet_list:
-                del tweet['_sa_instance_state']
-            return jsonify(tweet_list)
+    #     tweet_list = [tweet.__dict__ for tweet in dal.Db_Access.get_tweets_by_hashtag(hashtag)]
+    #     for tweet in tweet_list:
+    #         del tweet['_sa_instance_state']
+    #     return jsonify(tweet_list)
+
+    @app.route('/tweet/', method='POST')
+    def get_tweet():
+
+        # recuperer le hashtag:
+        print("DEBUG: GET == ", str(request.POST))
+        hashtag = request.POST['hashtag']
+
+        tweet_list = [tweet.__dict__ for tweet in dal.Db_Access.get_tweets_by_hashtag(hashtag)]
+        for tweet in tweet_list:
+            del tweet['_sa_instance_state']
+        return jsonify(tweet_list)
 
     return app

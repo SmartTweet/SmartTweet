@@ -1,6 +1,5 @@
 from sqlalchemy import Column, String, Integer, Date, Float
 from sqlalchemy.ext.declarative import declarative_base
-import app.data_access as dal
 
 
 class Tweet(declarative_base()):
@@ -51,17 +50,6 @@ class Tweet(declarative_base()):
     def from_raw_list(cls, raw_tweet_list: list, hashtag: str):
 
         raw_tweet_list = filter(cls.__filter_language, raw_tweet_list)
-
-        # tweet_list = list()
-        # for tweet in raw_tweet_list:
-        #     tweet_list.append(cls(
-        #         tweet.id,
-        #         tweet.text,
-        #         hashtag,
-        #         tweet.created_at
-        #     ))
-
-        # return tweet_list
 
         return [
             cls(
