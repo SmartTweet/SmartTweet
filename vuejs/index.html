@@ -21,7 +21,10 @@
         </form>
 
         <pie-chart ref="chart"></pie-chart>
-        {{ selectedSentiment }}
+        <div v-if="tweets">
+            <h2>{{ SENTIMENT[selectedSentiment] | toUpperCase }} TWEETS</h2>
+            <article v-for="tweet in tweets">{{ tweet }}</article>
+        </div>
     </div>
 
     <!-- development version, includes helpful console warnings -->
@@ -45,17 +48,7 @@
     <script>
         const PieChart = Vue.component('pie-chart', {
             mixins: [VueChartJs.mixins.reactiveData],
-            extends: VueChartJs.Pie,
-            methods: {
-                handle(point, event) {
-                    const item = event[0]
-                    this.$emit('on-receive', {
-                        index: item._index,
-                        backgroundColor: item._view.backgroundColor,
-                        value: this.values[item._index]
-                    })
-                }
-            }
+            extends: VueChartJs.Pie
         })
 
         new Vue({
@@ -63,12 +56,26 @@
             data() {
                 return {
                     hashtag: '',
-                    selectedSentiment: {}, // 0: positive, 1: neutral, 2: negative, 3:mixed
-                    tweets: []
+                    selectedSentiment: null, // 0: positive, 1: neutral, 2: negative, 3:mixed
+                    SENTIMENT: [
+                        'positive',
+                        'neutral',
+                        'negative',
+                        'mixed'
+                    ],
+                    tweets: null,
+                    notFilteredTweets: null
                 }
             },
             components: {
                 'pie-chart': PieChart
+            },
+            filters: {
+                toUpperCase: function (value) {
+                    if (!value) return ''
+                    value = value.toString()
+                    return value.toUpperCase()
+                }
             },
             methods: {
                 search: function (event) {
@@ -80,6 +87,7 @@
                         })
                         .then(response => {
                             const responseData = response.data.documents
+                            this.notFilteredTweets = responseData
                             counts = _.countBy(responseData, 'sentiment')
                             console.log(responseData)
 
@@ -99,7 +107,9 @@
                 },
                 update(point, event) {
                     const item = event[0]
+                    console.log(item)
                     this.selectedSentiment = item._index
+                    this.tweets = _.filter(this.notFilteredTweets, { 'sentiment': this.SENTIMENT[this.selectedSentiment] })
                 }
             }
         })
