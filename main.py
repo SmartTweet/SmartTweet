@@ -1,3 +1,6 @@
+from flask import Flask, request
+from flask_cors import CORS
+
 import twitter
 import azure
 
@@ -9,10 +12,24 @@ def get_sentiments(ma_recherche: str):
     documents = azure.azure_api.filter_language(documents)
     azure_json = azure.azure_api.sentiments(documents)
 
-    print(azure_json)
-    exit()
-
+    # print(azure_json)
     return azure_json
+
+
+def create_app():
+    app = Flask(__name__)
+    CORS(app)
+
+    @app.route('/')
+    def homepage():
+        hashtag = request.args.get('hashtag')
+
+        if hashtag is not None:
+            return get_sentiments(hashtag)
+
+        return {}
+
+    return app
 
 
 if __name__ == "__main__":

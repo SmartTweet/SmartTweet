@@ -25,12 +25,7 @@
             </div>
         </form>
 
-        <pie-chart @on-receive="update" v-if="tweetsBySentiment"></pie-chart>
-        <ol>
-            <li v-for="tweet in tweets">
-                {{ tweet }}
-            </li>
-        </ol>
+        <pie-chart></pie-chart>
         {{ selectedSentiment }}
     </div>
 
@@ -53,52 +48,53 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.20/lodash.min.js"></script>
 
     <script>
-
         const PieChart = Vue.component('pie-chart', {
-            extends: VueChartJs.Pie,
+            mixins: [VueChartJs.mixins.reactiveData],
             data() {
                 return {
-                    values: [40, 10, 30]
+                    chartData: ''
                 }
             },
+            extends: VueChartJs.Pie,
             mounted() {
-                this.renderChart({
-                    labels: ["Positive", "Neutral", "Negative"],
-                    datasets: [{
-                        label: 'Data One',
-                        backgroundColor: ['#89c402', '#0078d4', '#a51419'],
-                        data: this.values
-                    }]
-                },
-                    { responsive: true, maintainAspectRatio: false, onClick: this.handle })
+                this.renderChart(this.chartData)
             },
-            methods: {
-                handle(point, event) {
-                    const item = event[0]
-                    this.$emit('on-receive', {
-                        index: item._index,
-                        backgroundColor: item._view.backgroundColor,
-                        value: this.values[item._index]
+            created() {
+                axios.get(`http://localhost:5000/`, {
+                    params: {
+                        hashtag: '#ps5'
+                    }
+                })
+                    .then(response => {
+                        const responseData = response.data.documents
+                        counts = _.countBy(responseData, 'sentiment'),
+                            this.chartData = {
+                                labels: ["Positive", "Neutral", "Negative"],
+                                datasets: [{
+                                    label: 'Tweets sentiment',
+                                    backgroundColor: '#f87979',
+                                    data: _.map(counts => function (value, key) {
+                                        return {
+                                            name: key,
+                                            y: value
+                                        }
+                                    })
+                                }]
+                            }
+                        console.log(counts)
                     })
-                }
+                    .catch(e => {
+                        console.log(e)
+                    })
             }
         })
+
 
         new Vue({
             el: '#app',
             data() {
                 return {
                     hashtag: '',
-                    positive: 0,
-                    neutral: 0,
-                    negative: 0,
-                    tweets: [
-                        { id: 1, sentiment: 'positive' },
-                        { id: 2, sentiment: 'positive' },
-                        { id: 3, sentiment: 'neutral' },
-                        { id: 4, sentiment: 'negative' },
-                    ],
-                    tweetsBySentiment: [],
                     selectedSentiment: {}
                 }
             },
@@ -106,31 +102,6 @@
                 'pie-chart': PieChart
             },
             methods: {
-                search: function (event) {
-                    axios
-                        // https://api.coindesk.com/v1/bpi/currentprice.json
-                        // https://localhost:5000/
-                        .get('http://localhost:5000', {
-                            params: {
-                                hashtag: this.hashtag
-                            }
-                        })
-                        .then(response => {
-                            console.log(response.data.documents)
-                            this.tweets = response.data.documents
-                            console.log("OK2")
-
-                            this.tweetsBySentiment = _.groupBy(this.tweets, 'sentiment')
-                            // console.log(this.tweets)
-                            console.log(this.tweetsBySentiment)
-                        })
-                        .catch(err => {
-                            console.log(err)
-                        })
-                },
-                update(data) {
-                    this.selectedSentiment = data
-                }
             }
         })
     </script>

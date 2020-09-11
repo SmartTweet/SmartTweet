@@ -1,4 +1,6 @@
 from flask import Flask
+import requests
+from ..main import get_sentiments
 
 
 def create_app():
@@ -6,6 +8,7 @@ def create_app():
 
     @app.route('/')
     def homepage():
-        return render_template('homepage.html')
+        hashtag = requests.args.get('hashtag')
+        return get_sentiments(hashtag)
 
     return app
