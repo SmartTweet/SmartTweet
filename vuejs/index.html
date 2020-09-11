@@ -11,26 +11,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 </head>
 
-</html>
-
 <body>
     <div id="app">
         <form class="form-inline" v-on:submit.prevent="search" novalidate>
             <div class="input-group">
                 <input placeholder="Search hashtag" type="text" class="form-control" v-model="hashtag" required>
-                <div class="invalid-feedback">
-                    Please choose a research.
-                </div>
                 <button class="btn btn-primary"><i class="fa fa-search"></i></button>
             </div>
         </form>
 
-        <pie-chart @on-receive="update" v-if="tweetsBySentiment"></pie-chart>
-        <ol>
-            <li v-for="tweet in tweets">
-                {{ tweet }}
-            </li>
-        </ol>
+        <pie-chart ref="chart"></pie-chart>
         {{ selectedSentiment }}
     </div>
 
@@ -53,25 +43,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.20/lodash.min.js"></script>
 
     <script>
-
         const PieChart = Vue.component('pie-chart', {
+            mixins: [VueChartJs.mixins.reactiveData],
             extends: VueChartJs.Pie,
-            data() {
-                return {
-                    values: [40, 10, 30]
-                }
-            },
-            mounted() {
-                this.renderChart({
-                    labels: ["Positive", "Neutral", "Negative"],
-                    datasets: [{
-                        label: 'Data One',
-                        backgroundColor: ['#89c402', '#0078d4', '#a51419'],
-                        data: this.values
-                    }]
-                },
-                    { responsive: true, maintainAspectRatio: false, onClick: this.handle })
-            },
             methods: {
                 handle(point, event) {
                     const item = event[0]
@@ -89,17 +63,8 @@
             data() {
                 return {
                     hashtag: '',
-                    positive: 0,
-                    neutral: 0,
-                    negative: 0,
-                    tweets: [
-                        { id: 1, sentiment: 'positive' },
-                        { id: 2, sentiment: 'positive' },
-                        { id: 3, sentiment: 'neutral' },
-                        { id: 4, sentiment: 'negative' },
-                    ],
-                    tweetsBySentiment: [],
-                    selectedSentiment: {}
+                    selectedSentiment: {}, // 0: positive, 1: neutral, 2: negative, 3:mixed
+                    tweets: []
                 }
             },
             components: {
@@ -108,30 +73,37 @@
             methods: {
                 search: function (event) {
                     axios
-                        // https://api.coindesk.com/v1/bpi/currentprice.json
-                        // https://localhost:5000/
                         .get('http://localhost:5000', {
                             params: {
                                 hashtag: this.hashtag
                             }
                         })
                         .then(response => {
-                            console.log(response.data.documents)
-                            this.tweets = response.data.documents
-                            console.log("OK2")
+                            const responseData = response.data.documents
+                            counts = _.countBy(responseData, 'sentiment')
+                            console.log(responseData)
 
-                            this.tweetsBySentiment = _.groupBy(this.tweets, 'sentiment')
-                            // console.log(this.tweets)
-                            console.log(this.tweetsBySentiment)
+                            this.$refs.chart.renderChart({
+                                labels: ["Positive", "Neutral", "Negative", "Mixed"],
+                                datasets: [{
+                                    label: 'Tweets sentiment',
+                                    backgroundColor: ['#89c402', '#0078d4', '#a51419', '#976C0E'],
+                                    data: [counts.positive, counts.neutral, counts.negative, counts.mixed]
+                                }]
+                            }, { responsive: true, maintainAspectRatio: false, onClick: this.update })
+                            console.log(counts)
                         })
                         .catch(err => {
                             console.log(err)
                         })
                 },
-                update(data) {
-                    this.selectedSentiment = data
+                update(point, event) {
+                    const item = event[0]
+                    this.selectedSentiment = item._index
                 }
             }
         })
     </script>
 </body>
+
+</html>
