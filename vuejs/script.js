@@ -41,8 +41,6 @@ new Vue({
                     const responseData = response.data
                     this.notFilteredTweets = responseData
                     counts = _.countBy(responseData, 'sentiment')
-                    console.log(responseData)
-                    console.log(counts)
 
                     this.$refs.chart.renderChart({
                         labels: ["Positive", "Neutral", "Negative", "Mixed"],
@@ -52,7 +50,6 @@ new Vue({
                             data: [counts.positif, counts.neutral, counts.negative, counts.mixed]
                         }]
                     }, { responsive: true, maintainAspectRatio: false, onClick: this.update })
-                    console.log(counts)
                 })
                 .catch(err => {
                     console.log(err)
@@ -60,7 +57,6 @@ new Vue({
         },
         update(point, event) {
             const item = event[0]
-            console.log(item)
             this.selectedSentiment = item._index
             this.tweets = _.filter(this.notFilteredTweets, { 'sentiment': this.SENTIMENT[this.selectedSentiment] })
         }
