@@ -21,4 +21,3 @@ for tweet in tweepy.Cursor(api.search,q=reponse_utilisateur + " -RT",result='rec
     df = df.append(df2)
     
 a = df.to_csv("out.csv",encoding="utf-8")
-

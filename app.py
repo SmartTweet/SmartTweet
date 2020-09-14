@@ -1,8 +1,5 @@
 
 import os
-
-
-
 from flask import Flask, render_template
 
 app = Flask(__name__, template_folder="template")
@@ -22,4 +19,5 @@ def hello_world():
     )
 
 app.run(port = 8080, host = "localhost")
+
 
