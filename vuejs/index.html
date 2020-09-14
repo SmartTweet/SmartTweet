@@ -13,23 +13,42 @@
 
 <body>
     <div id="app">
-        <form class="form-inline" v-on:submit.prevent="search" novalidate>
-            <div class="input-group mb-3">
+        <form autocomplete="off" class="form-inline" v-on:submit.prevent="search" novalidate>
+            <div class="form-group mb-3">
                 <div class="input-group-prepend">
                   <span class="input-group-text">#</span>
                 </div>
-                <input placeholder="Search hashtag" type="text" class="form-control" v-model="hashtag" required>
+                <input placeholder="Search hashtag" type="text" class="form-control" v-model="hashtag">
                 <button class="btn btn-primary"><i class="fa fa-search"></i></button>
               </div>
         </form>
+        <p v-if="errors.length">
+            <b>Please correct the following error(s):</b>
+            <ul>
+              <li v-for="error in errors" class="text-danger">{{ error }}</li>
+            </ul>
+        </p>
 
         <pie-chart ref="chart"></pie-chart>
-        <table v-if="tweets">
-            <h2 v-if="tweets">{{ SENTIMENT[selectedSentiment] | toUpperCase }} TWEETS</h2>
-            <tr v-for="tweet in tweets">
-                <td>{{ tweet.content }}</td>
-                <td>{{ tweet.confident_level | toPercent }}%</td>
-            </tr>
+
+        <h2 v-if="tweets">{{ SENTIMENT[selectedSentiment] | toUpperCase }} TWEETS</h2>
+        <table v-if="tweets" class="table table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Content</th>
+                    <th scope="col">Confident level</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="tweet in tweets">
+                    <th scope="row">{{ tweet.id_tweet }}</th>
+                    <td>{{ tweet.date }}</td>
+                    <td>{{ tweet.content }}</td>
+                    <td>{{ tweet.confident_level | toPercent }}%</td>
+                </tr>
+            </tbody>
         </table>
     </div>
 

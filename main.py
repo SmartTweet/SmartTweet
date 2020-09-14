@@ -20,6 +20,6 @@ def get_analyses(ma_recherche: str, nbr_result: int):
 
 
 if __name__ == "__main__":
-    tweet_list = get_analyses("#PNL", 11)
+    tweet_list = get_analyses("samsung", 11)
 
     Db_Access.insert_tweet(tweet_list)
