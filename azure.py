@@ -34,7 +34,7 @@ print("")
 dyc = sentiments
  
 sentiments = open('sentiments.csv', 'w')
-mywriter = csv.writer(sentiments, delimiter=';', dialect='excel', lineterminator='\n')
+mywriter = csv.writer(sentiments, delimiter=' ', dialect='excel', lineterminator='\n')
 
 mywriter.writerow(["id","sentiment","postivie", "neutre", "negative"])
  
