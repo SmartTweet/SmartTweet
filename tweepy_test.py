@@ -18,4 +18,5 @@ for tweet in tweepy.Cursor(api.search,q="#Playstation5 -RT",result='recent',lang
     df2 = pd.DataFrame(ar, columns=["id","language","date", "texte"])
     df = df.append(df2)
     
-df.to_csv("out.csv",encoding="utf-8")
+a = df.to_csv("out.csv",encoding="utf-8")
+
