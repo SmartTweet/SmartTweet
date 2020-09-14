@@ -1,20 +1,34 @@
-from flask import Flask, render_template
+from flask import Flask, jsonify
+from flask_cors import CORS
+
+import app.data_access as dal
+
+app = Flask(__name__)
+CORS(app)
 
 
-def create_app():
-    app = Flask(__name__)
+@app.route('/tweet/')
+def get_all_tweet():
+    tweet_list = [tweet.__dict__ for tweet in dal.Db_Access.get_all()]
+    for tweet in tweet_list:
+        del tweet['_sa_instance_state']
+    return jsonify(tweet_list)
 
-    @app.route('/')
-    def homepage():
-        return render_template('homepage.html')
 
-    @app.route('/about/')
-    def about():
-        return render_template('about.html')
+@app.route('/api/tweet/<hashtag>')
+def get_tweet(hashtag):
+    # TODO Check #
+    print(hashtag)
+    if not hashtag:
+        return []
 
-    @app.route('/hello/')
-    @app.route('/hello/<name>')
-    def hello(name='diallo'):
-        return render_template('hello.html', name=name)
+    tweet_list = [
+        tweet.__dict__ for tweet in dal.Db_Access.get_tweets_by_hashtag(
+            hashtag)]
 
-    return app
+    print(len(tweet_list))
+    for tweet in tweet_list:
+        print(tweet)
+        del tweet['_sa_instance_state']
+
+    return jsonify(tweet_list)
