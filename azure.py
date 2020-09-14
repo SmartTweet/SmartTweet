@@ -3,6 +3,8 @@ from pprint import pprint           # pprint is used to format the JSON response
 import keys
 import csv
 import pandas as pd
+import matplotlib.pyplot as plt 
+
 
 # Créez des variables pour le point de terminaison et la clé d’abonnement Azure de votre ressource.
 key_azure = "8ada2411512a4dadb2add92f6e63291b"
@@ -34,9 +36,9 @@ print("")
 dyc = sentiments
  
 sentiments = open('sentiments.csv', 'w')
-mywriter = csv.writer(sentiments, delimiter=' ', dialect='excel', lineterminator='\n')
+mywriter = csv.writer(sentiments, delimiter=',', dialect='excel', lineterminator='\n')
 
-mywriter.writerow(["id","sentiment","postivie", "neutre", "negative"])
+mywriter.writerow(["id","sentiment","positive", "neutre", "negative"])
  
 for i in dyc["documents"]:
     mywriter.writerow([
@@ -48,3 +50,11 @@ for i in dyc["documents"]:
     ])
 
 sentiments.close()
+
+
+lecture_csv = pd.read_csv("sentiments.csv")
+print(lecture_csv)
+
+lecture_csv.groupby("sentiment")["sentiment"].count().plot(kind="bar")
+plt.show()
+

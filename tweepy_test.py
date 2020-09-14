@@ -9,9 +9,11 @@ auth = tweepy.OAuthHandler(cle.API_TWITTER_KEYS, cle.API_TWITTER_SECRET_KEYS)
 auth.set_access_token(cle.API_TWITTER_TOKEN, cle.API_TWITTER_TOKEN_SECRET)
 api = tweepy.API(auth)
 
-df = pd.DataFrame(columns=["id","language","date", "texte"])
 
-for tweet in tweepy.Cursor(api.search,q="#Playstation5 -RT",result='recent',lang = 'fr').items(10):
+reponse_utilisateur = input("Choisissez votre # sur Twitter : ")
+
+df = pd.DataFrame(columns=["id","language","date", "texte"])
+for tweet in tweepy.Cursor(api.search,q=reponse_utilisateur + " -RT",result='recent',lang = 'fr').items(10):
     
     liste_tweet = [tweet.id, tweet.lang, tweet.created_at, tweet.text]
     ar = np.array([liste_tweet])
