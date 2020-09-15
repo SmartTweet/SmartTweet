@@ -8,48 +8,57 @@
     <!-- Load icon library -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
+    <link rel="stylesheet" href="style.css">
+
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 </head>
 
 <body>
-    <div id="app">
-        <form autocomplete="off" class="form-inline" v-on:submit.prevent="search" novalidate>
-            <div class="form-group mb-3">
-                <div class="input-group-prepend">
-                  <span class="input-group-text">#</span>
+    <div id="app" class="row">
+        <div class="col-6">
+            <form autocomplete="off" class="form-inline" v-on:submit.prevent="search" novalidate>
+                <div class="form-group mb-3" v-bind:class="{'open':openSuggestion}">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">#</span>
+                    </div>
+                    <input placeholder="Search hashtag" type="text" class="form-control" v-model="hashtag">
+                    <button class="btn btn-primary"><i class="fa fa-search"></i></button>
+                    <ul class="dropdown-menu" style="width:100%">
+                        <li v-for="suggestion in matches" v-bind:class="{'active': isActive($index)}" @click="suggestionClick($index)">
+                            <a href="#">{{ suggestion }}</a>
+                        </li>
+                    </ul>
                 </div>
-                <input placeholder="Search hashtag" type="text" class="form-control" v-model="hashtag">
-                <button class="btn btn-primary"><i class="fa fa-search"></i></button>
-              </div>
-        </form>
-        <p v-if="errors.length">
-            <b>Please correct the following error(s):</b>
+            </form>
+            <p v-if="errors.length">
+                <b>Please correct the following error(s):</b>
             <ul>
-              <li v-for="error in errors" class="text-danger">{{ error }}</li>
+                <li v-for="error in errors" class="text-danger">{{ error }}</li>
             </ul>
-        </p>
-
-        <pie-chart ref="chart"></pie-chart>
-
-        <h2 v-if="tweets">{{ SENTIMENT[selectedSentiment] | toUpperCase }} TWEETS</h2>
-        <table v-if="tweets" class="table table-striped">
-            <thead class="thead-dark">
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Date</th>
-                    <th scope="col">Content</th>
-                    <th scope="col">Confident level</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="tweet in tweets">
-                    <th scope="row">{{ tweet.id_tweet }}</th>
-                    <td>{{ tweet.date }}</td>
-                    <td>{{ tweet.content }}</td>
-                    <td>{{ tweet.confident_level | toPercent }}%</td>
-                </tr>
-            </tbody>
-        </table>
+            </p>
+            <pie-chart ref="chart"></pie-chart>
+        </div>
+        <div class="col-6">
+            <h2 v-if="tweets">{{ SENTIMENT[selectedSentiment] | toUpperCase }} TWEETS</h2>
+            <table v-if="tweets" class="table table-striped">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Content</th>
+                        <th scope="col">Confident level</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="tweet in tweets">
+                        <th scope="row">{{ tweet.id_tweet }}</th>
+                        <td>{{ tweet.date }}</td>
+                        <td>{{ tweet.content }}</td>
+                        <td>{{ tweet.confident_level | toPercent }}%</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 
     <!-- development version, includes helpful console warnings -->
@@ -74,3 +83,4 @@
 </body>
 
 </html>
+

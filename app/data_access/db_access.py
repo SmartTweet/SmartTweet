@@ -40,3 +40,8 @@ class Db_Access():
             model.Tweet.hashtag == hashtag.lower()).all()
 
 
+    @classmethod
+    def get_hashtags(cls):
+        session = cls.__SESSION()
+
+        return [row.hashtag for row in session.query(model.Tweet).distinct(model.Tweet.hashtag).all()]
