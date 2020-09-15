@@ -51,3 +51,8 @@ def get_tweet(hashtag):
         del tweet['_sa_instance_state']
 
     return jsonify(tweet_list)
+
+
+@app.route('/api/hashtags/')
+def get_hashtags():
+    return jsonify(dal.Db_Access.get_hashtags())
