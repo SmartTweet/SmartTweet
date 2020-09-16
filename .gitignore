@@ -5,3 +5,7 @@ __pycache__/
 .vscode/
 
 twitter/Settings.py
+
+# npm
+node_modules/
+dist/

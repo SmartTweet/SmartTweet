@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, send_from_directory
+from flask import Flask, jsonify
 from flask_cors import CORS
 
 import app.data_access as dal
@@ -13,7 +13,7 @@ def index():
     return "Bienvenue sur le serveur back !"
 
 
-@app.route('/tweet/')
+@app.route('/api/tweets/')
 def get_all_tweet():
     tweet_list = [tweet.__dict__ for tweet in dal.Db_Access.get_all()]
     for tweet in tweet_list:
@@ -23,7 +23,6 @@ def get_all_tweet():
 
 @app.route('/api/tweet/<hashtag>')
 def get_tweet(hashtag):
-    # TODO Check #
     if not hashtag:
         return []
 
