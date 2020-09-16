@@ -1,32 +1,31 @@
 from flask import Flask, jsonify, render_template, send_from_directory
-from flask_cors import CORS
+# from flask_cors import CORS
 
 import app.data_access as dal
 
-web_folder = "../web"
-app = Flask(__name__, template_folder=web_folder)
-CORS(app)
+app = Flask(__name__)
+# CORS(app)
 
 
-@app.route('/js/<path:path>')
-def send_js(path):
-    return send_from_directory(web_folder + '/js', path)
+# @app.route('/js/<path:path>')
+# def send_js(path):
+#     return send_from_directory(web_folder + '/js', path)
 
 
-@app.route('/css/<path:path>')
-def send_css(path):
-    return send_from_directory(web_folder + '/css', path)
+# @app.route('/css/<path:path>')
+# def send_css(path):
+#     return send_from_directory(web_folder + '/css', path)
 
 
-@app.route('/img/<path:path>')
-def send_img(path):
-    return send_from_directory(web_folder + '/img', path)
+# @app.route('/img/<path:path>')
+# def send_img(path):
+#     return send_from_directory(web_folder + '/img', path)
 
 
 @app.route('/')
 @app.route('/index')
 def index():
-    return render_template('index.html')
+    return "Bienvenue sur le serveur back !"
 
 
 @app.route('/tweet/')
