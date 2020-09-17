@@ -44,7 +44,6 @@ new Vue({
                         const responseData = response.data
                         this.notFilteredTweets = responseData
                         counts = _.countBy(responseData, 'sentiment')
-                        console.log(counts)
                         this.$refs.chart.renderChart({
                             labels: ["Positive", "Neutral", "Negative", "Mixed"],
                             datasets: [{
@@ -52,18 +51,30 @@ new Vue({
                                 backgroundColor: ['#89c402', '#0078d4', '#a51419', '#976C0E'],
                                 data: [counts.positive, counts.neutral, counts.negative, counts.mixed]
                             }]
-                        }, { responsive: true, maintainAspectRatio: false, onClick: this.update })
+                        }, {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            onClick: this.update,
+                            title: { display: true, text: 'Number of tweet by sentiment for the hashtag #' + this.hashtag }
+                        })
                     })
                     .catch(err => {
                         console.log(err)
                     })
         },
         checkForm: function () {
-            if (this.hashtag)
-                return true
-
-            if (!this.hashtag)
+            if (!this.hashtag) {
                 this.errors.push('Hashtag required.')
+                return false
+            }
+
+            if (!this.hashtags.includes(this.hashtag)) {
+                this.errors.push('Hashtag not in db. Try ' + this.hashtags.toString())
+                return false
+            }
+
+            this.errors = []
+            return true
         },
         update(point, event) {
             const item = event[0]
@@ -76,8 +87,6 @@ new Vue({
             .get('http://localhost:5000/api/hashtags')
             .then(response => {
                 this.hashtags = _.concat(response.data)
-                // this.hashtags = response.data
-                console.log("#", this.hashtags)
             })
             .catch(err => {
                 console.log("err", err)
