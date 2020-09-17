@@ -13,10 +13,12 @@
   * [Prerequisites](#prerequisites)
   * [Installation](#installation)
 * [Usage](#usage)
+* [Acknowledgements](#acknowledgements)
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 You are contacted by a company that needs to assess the first reactions to their product announcement. Their main channel of communication is twitter. 
+[Presentation](https://docs.google.com/presentation/d/14etUQ4otF3BQbyU9TNj3P060ju3JNunuNAlsFVtwEio/edit?usp=sharing)
 
 ### Pre-requisites
 * Flask
@@ -55,4 +57,13 @@ Copy up and running follow these simple steps.
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-For starting the flask server, check you're in ***SmartTweet*** conda environment then use **server.bat**.
+For starting the flask server, check you're in ***SmartTweet*** conda environment then use 
+```sh
+> .\server.bat
+```
+
+## Acknowledgements
+* Axios
+* Bootstrap 
+* Chart.js > vue-chartjs
+* Font Awesome
