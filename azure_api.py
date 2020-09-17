@@ -4,6 +4,7 @@ import keys
 import csv
 import pandas as pd
 import matplotlib.pyplot as plt 
+import json
 
 
 # Créez des variables pour le point de terminaison et la clé d’abonnement Azure de votre ressource.
@@ -52,9 +53,16 @@ for i in dyc["documents"]:
 sentiments.close()
 
 
-lecture_csv = pd.read_csv("sentiments.csv")
-print(lecture_csv)
 
-lecture_csv.groupby("sentiment")["sentiment"].count().plot(kind="bar")
-plt.show()
+
+def get_sentiment():
+    lecture_csv = pd.read_csv("sentiments.csv", skiprows=1)
+    result = lecture_csv.to_json()
+    parsed = json.loads(result)
+    json_azure = json.dumps(parsed)
+    return json_azure
+
+get_sentiment()
+#lecture_csv.groupby("sentiment")["sentiment"].count().plot(kind="bar")
+#plt.show()
 

@@ -2,23 +2,37 @@
 <html lang="en">
 
 <head>
+    <link rel="stylesheet" href="template\tweet.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Analyse de tweets</title>
 </head>
 
 <body>
+<img src="image/tweet.jpeg" style="width:100%;height:100%;" alt="Chargement image">
+<h2 style="font-family: Helvetica Neue, sans-serif;">
+    <span class="border"></span>
+    <center>{{titre0}}</center>
+    <style>h2{border: solid #32a1ce;}</style> 
+</h2>
+<img src="image/equipe.jpg" style="width:100%;height:100%;" alt="Chargement image">
+<p class="homer"></p>
+    <h2 style="font-family: Helvetica Neue, sans-serif;">
+    <span class="border"></span>
     {{titre}}
-    <br>
-    <br>
-    {{corps}}
-    <br>
-    <br>
-    <h2>
+    <style>h2{border: solid #32a1ce;}</style> 
+    </h2>
+    {{corps2}}
+    <h2 style="font-family: Helvetica Neue, sans-serif;">
     {{titre2}}
     </h2>
-    <br>
-    {{corps2}}
+    {% for key, value in corps.items() %}
+    <p>{{key}} : {{value}}</p>
+    {% for v in value %}
+    {{v}}
+    {% endfor %}
+    {% endfor %}
 </body>
 
 </html>
