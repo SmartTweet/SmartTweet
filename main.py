@@ -1,6 +1,3 @@
-from flask import Flask, request
-from flask_cors import CORS
-
 import twitter
 import azure
 from app.model.tweet import Tweet
@@ -22,23 +19,7 @@ def get_analyses(ma_recherche: str, nbr_result: int):
     return tweet_list
 
 
-def create_app():
-    app = Flask(__name__)
-    CORS(app)
-
-    @app.route('/')
-    def homepage():
-        hashtag = request.args.get('hashtag')
-
-        if hashtag is not None:
-            return get_sentiments(hashtag)
-
-        return {}
-
-    return app
-
-
 if __name__ == "__main__":
-    tweet_list = get_analyses("#PNL", 11)
+    tweet_list = get_analyses("samsung", 11)
 
     Db_Access.insert_tweet(tweet_list)

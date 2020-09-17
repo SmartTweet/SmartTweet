@@ -1,2 +1,2 @@
-from .settings import settings
+from .Settings import Settings
 from .twitter_api import twitter_api

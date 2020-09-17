@@ -1,47 +1,56 @@
-from flask import Flask, render_template, jsonify
+from flask import Flask, jsonify, send_from_directory
+from flask_cors import CORS
+
 import app.data_access as dal
 
+app = Flask(__name__)
+CORS(app)
 
-def create_app():
-    app = Flask(__name__)
 
-    @app.route('/')
-    def homepage():
-        hashtag = requests.args.get('hashtag')
-        return get_sentiments(hashtag)
+@app.route('/')
+@app.route('/index')
+def index():
+    return "Bienvenue sur le serveur back !"
 
-    @app.route('/tweet/', method='GET')
-    def get_all_tweet():
-        tweet_list = [tweet.__dict__ for tweet in dal.Db_Access.get_all()]
-        for tweet in tweet_list:
-            del tweet['_sa_instance_state']
-        return jsonify(tweet_list)
 
-    """
-    Problème: une url de type /tweet/#NVIDIA sera coupée au niveau du "#"
-        Donc impossible d'utiliser '/tweet/<hashtag>'
-    """
-    # @app.route('/tweet/<hashtag>', method='GET')
-    # def get_tweet(hashtag):
+@app.route('/tweet/')
+def get_all_tweet():
+    tweet_list = [tweet.__dict__ for tweet in dal.Db_Access.get_all()]
+    for tweet in tweet_list:
+        del tweet['_sa_instance_state']
+    return jsonify(tweet_list)
 
-    #     if not hashtag:
-    #         return []
 
-    #     tweet_list = [tweet.__dict__ for tweet in dal.Db_Access.get_tweets_by_hashtag(hashtag)]
-    #     for tweet in tweet_list:
-    #         del tweet['_sa_instance_state']
-    #     return jsonify(tweet_list)
+@app.route('/api/tweet/<hashtag>')
+def get_tweet(hashtag):
+    # TODO Check #
+    if not hashtag:
+        return []
 
-    @app.route('/tweet/', method='POST')
-    def get_tweet():
+    tweet_list = [
+        tweet.__dict__ for tweet in dal.Db_Access.get_tweets_by_hashtag(
+            hashtag)]
 
-        # recuperer le hashtag:
-        print("DEBUG: GET == ", str(request.POST))
-        hashtag = request.POST['hashtag']
+    for tweet in tweet_list:
+        del tweet['_sa_instance_state']
 
-        tweet_list = [tweet.__dict__ for tweet in dal.Db_Access.get_tweets_by_hashtag(hashtag)]
-        for tweet in tweet_list:
-            del tweet['_sa_instance_state']
-        return jsonify(tweet_list)
+    return jsonify(tweet_list)
 
-    return app
+
+@app.route('/api/hashtags/')
+def get_hashtags():
+    return jsonify(dal.Db_Access.get_hashtags())
+
+# @app.route('/js/<path:path>')
+# def send_js(path):
+#     return send_from_directory(web_folder + '/js', path)
+
+
+# @app.route('/css/<path:path>')
+# def send_css(path):
+#     return send_from_directory(web_folder + '/css', path)
+
+
+# @app.route('/img/<path:path>')
+# def send_img(path):
+#     return send_from_directory(web_folder + '/img', path)
