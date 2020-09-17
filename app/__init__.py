@@ -7,16 +7,8 @@ def create_app():
 
     @app.route('/')
     def homepage():
-        return render_template('homepage.html')
-
-    @app.route('/about/')
-    def about():
-        return render_template('about.html')
-
-    @app.route('/hello/')
-    @app.route('/hello/<name>')
-    def hello(name='diallo'):
-        return render_template('hello.html', name=name)
+        hashtag = requests.args.get('hashtag')
+        return get_sentiments(hashtag)
 
     @app.route('/tweet/', method='GET')
     def get_all_tweet():

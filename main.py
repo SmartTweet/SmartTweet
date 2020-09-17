@@ -1,3 +1,6 @@
+from flask import Flask, request
+from flask_cors import CORS
+
 import twitter
 import azure
 from app.model.tweet import Tweet
@@ -17,6 +20,22 @@ def get_analyses(ma_recherche: str, nbr_result: int):
     tweet_list = Tweet.from_azure_response(tweet_list, azure_json)
 
     return tweet_list
+
+
+def create_app():
+    app = Flask(__name__)
+    CORS(app)
+
+    @app.route('/')
+    def homepage():
+        hashtag = request.args.get('hashtag')
+
+        if hashtag is not None:
+            return get_sentiments(hashtag)
+
+        return {}
+
+    return app
 
 
 if __name__ == "__main__":
