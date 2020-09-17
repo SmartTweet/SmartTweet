@@ -33,8 +33,7 @@ You are contacted by a company that needs to assess the first reactions to their
 Copy up and running follow these simple steps.
 
 ### Pre-requisites
-* Flask
-* Node.js
+* Python 3
 
 ### Installation
 After create your virtual environnement, please install **package-list.txt** for python packages and **package.json** for node packages.
