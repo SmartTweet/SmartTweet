@@ -20,39 +20,29 @@
 You are contacted by a company that needs to assess the first reactions to their product announcement. Their main channel of communication is twitter. 
 * [Presentation Google Slides](https://docs.google.com/presentation/d/14etUQ4otF3BQbyU9TNj3P060ju3JNunuNAlsFVtwEio/edit?usp=sharing)
 
-### Pre-requisites
-* Flask
-* Node.js
-
-### Librairies
-After create your virtuale environnement, please install **package-list.txt** for python packages and **package.json** for node packages.
-
-to install python packages:
-```
-conda install package-list.txt
-```
-
-to install node packages
-```
-npm install
-```
-### Database
-A SaaS Database is used for this application
-* PostgreSQL on ElephantSQL
-
+<!-- BUILT WITH -->
 ### Built With
 
 * Flask
 * Vue.js
+* A SaaS Database is used for this application: PostgreSQL on ElephantSQL
 
 <!-- GETTING STARTED -->
 ## Getting Started
 
 Copy up and running follow these simple steps.
 
-### Installation
+### Pre-requisites
+* Flask
+* Node.js
 
-1. Please install requirements in your conda environment with the **package-list.txt** file.
+### Installation
+After create your virtual environnement, please install **package-list.txt** for python packages and **package.json** for node packages.
+
+to install python packages:
+```
+conda install package-list.txt
+```
 
 <!-- USAGE EXAMPLES -->
 ## Usage
