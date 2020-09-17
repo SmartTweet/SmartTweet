@@ -16,17 +16,15 @@
     <div id="app">
         <div class="row" style="margin-right: 0 !important;">
             <div class="col-6">
-                <form autocomplete="off" class="form-inline" v-on:submit.prevent="search" novalidate>
-                    <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text">#</span>
-                        </div>
-                        <input placeholder="Search hashtag" type="text" class="form-control" v-model="hashtag">
-                        <div class="input-group-append">
-                            <button class="btn btn-primary"><i class="fa fa-search"></i></button>
-                        </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">#</span>
                     </div>
-                </form>
+                    <input :placeholder="[[hashtags]]" type="text" class="form-control" v-model="hashtag">
+                    <div class="input-group-append">
+                        <button class="btn btn-primary" v-on:click="search"><i class="fa fa-search"></i></button>
+                    </div>
+                </div>
                 <p v-if="errors.length">
                     <b>Please correct the following error(s):</b>
                 <ul>
