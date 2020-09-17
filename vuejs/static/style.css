@@ -1,6 +1,21 @@
 * { box-sizing: border-box; }
+html {
+  height: 100%;
+}
 body {
-  font: 16px Arial;
+  background-size: cover;
+  height: 100%;
+}
+#app {
+  min-height: 100%;
+  background-color:#ffffff75;
+}
+tbody {
+  background-color: #ffffffa0;
+}
+.detail {
+  overflow-y: auto;
+  max-height: 90%;
 }
 .autocomplete {
   /*the container must be positioned relative:*/
