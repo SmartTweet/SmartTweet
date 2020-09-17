@@ -48,9 +48,6 @@ A SaaS Database is used for this application
 
 Copy up and running follow these simple steps.
 
-### Prerequisites
-TODO
-
 ### Installation
 
 1. Please install requirements in your conda environment with the **package-list.txt** file.
