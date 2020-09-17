@@ -26,12 +26,7 @@ export default {
     },
     methods: {
         filtrerList(filtre) {
-            console.log(filtre)
-            // mecanique de filtre
-            this.listeFiltree = this.list.filter(function () {
-                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-                }
-            }
+            console.log(filtre);
         }
     },
 };
@@ -41,11 +36,14 @@ export default {
 
 <style scoped>
 .TweetList {
-    height: 20em;
-    width: 60%;
+    max-height: ;
+    height: auto;
+    width: 40%;
     background-color: #424242;
-    margin: 3em;
-    padding: 1em;
+}
+
+.TweetList>div {
+    margin: 0em 2em 1em 2em;
 }
 
 li:hover {

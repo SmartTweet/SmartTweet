@@ -14,7 +14,30 @@ export default {
             tweet_list: [
                 "patate",
                 "tomate",
-                "pomme"
+                "pomme",
+                "pain",
+                "raisin",
+                "patate",
+                "tomate",
+                "pomme",
+                "pain",
+                "raisin",
+                "patate",
+                "tomate",
+                "pomme",
+                "pain",
+                "raisin",
+                "patate",
+                "tomate",
+                "pomme",
+                "pain",
+                "raisin",
+                "patate",
+                "tomate",
+                "pomme",
+                "pain",
+                "raisin",
+                "tofu"
             ]
         }
     },
@@ -30,6 +53,11 @@ export default {
 <style scoped>
 .TweetPanel {
     width: 100%;
-    background-color: grey;
+}
+
+.TweetPanel>div {
+    margin: 1em;
+    border-radius: 1em;
+    padding: 1em;
 }
 </style>

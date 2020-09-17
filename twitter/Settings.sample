@@ -1,3 +1,0 @@
-class Settings:
-    CONSUMER_KEY = r"XXXX"
-    CONSUMER_SECRET = r"X"

@@ -1,7 +1,7 @@
 <template>
-<div>
+<div class="List">
     <ul class="list-group">
-        <li class="list-group-item" @click="HashtagClick" :key=tweet v-for="tweet in list">
+        <li class="list-group-item" @click="HashtagClick(tweet)" :key=tweet v-for="tweet in list">
             {{tweet}}
         </li>
     </ul>
@@ -14,9 +14,19 @@ export default {
     props: {
         list: Array,
     },
+    data() {
+        return {
+            selected: null,
+        }
+    },
     methods: {
-        HashtagClick() {
-            console.log(' WAZA');
+        HashtagClick(tweet) {
+            if (!tweet) {
+                console.log("le tweet est null !");
+                return;
+            }
+            console.log(tweet);
+            this.selected = tweet;
         }
     },
 };
@@ -25,17 +35,13 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 
 <style scoped>
-.TweetList {
-    height: 90%;
-    width: 40%;
-    background-color: #424242;
-    margin: 3em;
-    padding: 1em;
-    background-color: ivory;
+.List {
+    color: #131313;
 }
 
 li:hover {
     cursor: pointer;
-    background-color: red;
+    color: ivory;
+    background-color: #666;
 }
 </style>
