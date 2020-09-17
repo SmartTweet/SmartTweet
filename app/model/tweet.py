@@ -36,15 +36,19 @@ class Tweet(declarative_base()):
 
     @classmethod
     def from_azure_response(cls, tweet_list, azure_json):
-        for tweet in tweet_list:
-            for analysis in azure_json['documents']:
-                if str(tweet.id_tweet_twitter) == str(analysis['id']):
-                    tweet.set_analysis(
-                        analysis['sentiment'],
-                        analysis['confidenceScores'][analysis['sentiment']]
-                    )
-                    break
-        return tweet_list
+        try:
+            for tweet in tweet_list:
+                for analysis in azure_json['documents']:
+                    if str(tweet.id_tweet_twitter) == str(analysis['id']):
+                        tweet.set_analysis(
+                            analysis['sentiment'],
+                            analysis['confidenceScores'][analysis['sentiment']]
+                        )
+                        break
+            return tweet_list
+        except KeyError:
+            print("Erreur dans la réponse de azure: " + str(azure_json))
+            print("\n\n")
 
     @classmethod
     def from_raw_list(cls, raw_tweet_list: list, hashtag: str):

@@ -9,15 +9,22 @@ class azure_api:
 
     @staticmethod
     def from_tweetlist_to_documents(tweets_list):
-        document_list = []
-        for tweet in tweets_list:
-            document_list.append({
-                'id': tweet.id_tweet_twitter,
-                'language': tweet.language,
-                'text': tweet.content
-            })
+        list_document = []
+        while tweets_list:
+            tweets = tweets_list[:10]
+            tweets_list = tweets_list[10:]
 
-        return {"documents": document_list}
+            analyse_list = []
+            for tweet in tweets:
+                analyse_list.append({
+                    'id': tweet.id_tweet_twitter,
+                    'language': tweet.language,
+                    'text': tweet.content
+                })
+
+            list_document.append({"documents": analyse_list})
+        return list_document
+
 
     @classmethod
     def sentiments(cls, documents: dict):
