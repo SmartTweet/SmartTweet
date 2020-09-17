@@ -4,8 +4,8 @@ import twitter
 
 class twitter_api:
     api = tweepy.API(tweepy.OAuthHandler(
-            twitter.Settings.CONSUMER_KEY,
-            twitter.Settings.CONSUMER_SECRET
+            twitter.settings.CONSUMER_KEY,
+            twitter.settings.CONSUMER_SECRET
         )
     )
 

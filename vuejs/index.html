@@ -4,7 +4,6 @@
 <head>
     <!-- Load required Bootstrap and BootstrapVue CSS -->
     <link type="text/css" rel="stylesheet" href="https://unpkg.com/bootstrap/dist/css/bootstrap.min.css" />
-    <link type="text/css" rel="stylesheet" href="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.css" />
     <!-- Load icon library -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
@@ -19,17 +18,17 @@
     </header>
     <div id="app" class="row">
         <div class="col-6">
-            <form autocomplete="off" class="form-inline" v-on:submit.prevent="search" novalidate>
-                <div class="input-group input-group-lg mb-3">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text">#</span>
-                    </div>
-                    <input placeholder="Search hashtag" type="text" class="form-control" v-model="hashtag">
-                    <div class="input-group-append">
-                        <button class="btn btn-primary"><i class="fa fa-search"></i></button>
-                    </div>
+            <!-- <form autocomplete="off" class="form-inline" v-on:submit.prevent="search" novalidate> -->
+            <div class="input-group input-group-lg mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">#</span>
                 </div>
-            </form>
+                <input :placeholder="[[hashtags]]" type="text" class="form-control" v-model="hashtag">
+                <div class="input-group-append">
+                    <button class="btn btn-primary" v-on:click="search"><i class="fa fa-search"></i></button>
+                </div>
+            </div>
+            <!-- </form> -->
             <p v-if="errors.length">
                 <b>Please correct the following error(s):</b>
             <ul>
