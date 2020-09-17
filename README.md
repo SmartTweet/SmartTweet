@@ -18,7 +18,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 You are contacted by a company that needs to assess the first reactions to their product announcement. Their main channel of communication is twitter. 
-* [Presentation Google Slide](https://docs.google.com/presentation/d/14etUQ4otF3BQbyU9TNj3P060ju3JNunuNAlsFVtwEio/edit?usp=sharing)
+* [Presentation Google Slides](https://docs.google.com/presentation/d/14etUQ4otF3BQbyU9TNj3P060ju3JNunuNAlsFVtwEio/edit?usp=sharing)
 
 ### Pre-requisites
 * Flask
