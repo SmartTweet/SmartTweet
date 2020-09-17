@@ -24,21 +24,6 @@ new Vue({
     components: {
         'pie-chart': PieChart
     },
-    computed: {
-        //Filtering the suggestion based on the input
-        matches() {
-            return this.hashtags.filter((str) => {
-                console.log("this hash", str.indexOf(this.hashtag))
-                return str.indexOf(this.hashtag) >= 0;
-            })
-        },
-        //The flag
-        openSuggestion() {
-            return this.hashtag !== "" &&
-                this.matches.length != 0 &&
-                this.open === true
-        }
-    },
     filters: {
         toUpperCase: function (val) {
             if (!val) return ''
