@@ -18,6 +18,7 @@
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
+You are contacted by a company that needs to assess the first reactions to their product announcement. Their main channel of communication is twitter. 
 
 ### Pre-requisites
 * Flask
@@ -26,7 +27,7 @@
 ### Librairies
 After create your virtuale environnement, please install **package-list.txt** for python packages and **package.json** for node packages.
 
-to install python pckages:
+to install python packages:
 ```
 conda install package-list.txt
 ```
@@ -36,8 +37,8 @@ to install node packages
 npm install
 ```
 ### Database
-A SaaS Database id used for this application
-* PostgreSQL on ElephantSQL SaaS
+A SaaS Database is used for this application
+* PostgreSQL on ElephantSQL
 
 ### Built With
 
