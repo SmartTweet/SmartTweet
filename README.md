@@ -1,9 +1,7 @@
 <p align="center">
   <h3 align="center">SmartTweet</h3>
 
-  <p align="center">
-  Vous êtes contactés par une entreprise qui a besoin d’évaluer les premières réactions liées à l’annonce de leur produit. Leur principal canal de communication est twitter. Choisissez votre produit et le hashtag qui lui ai associé
-  </p>
+  <p align="center">Web application that analyzes tweet's emotions about a product</p>
 </p>
 
 <!-- TABLE OF CONTENTS -->
