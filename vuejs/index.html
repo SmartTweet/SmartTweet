@@ -17,12 +17,14 @@
     <div id="app" class="row">
         <div class="col-6">
             <form autocomplete="off" class="form-inline" v-on:submit.prevent="search" novalidate>
-                <div class="form-group mb-3" v-bind:class="{'open':openSuggestion}">
+                <div class="input-group input-group-lg mb-3" v-bind:class="{'open':openSuggestion}">
                     <div class="input-group-prepend">
                         <span class="input-group-text">#</span>
                     </div>
                     <input placeholder="Search hashtag" type="text" class="form-control" v-model="hashtag">
-                    <button class="btn btn-primary"><i class="fa fa-search"></i></button>
+                    <div class="input-group-append">
+                        <button class="btn btn-primary"><i class="fa fa-search"></i></button>
+                    </div>
                     <ul class="dropdown-menu" style="width:100%">
                         <li v-for="suggestion in matches" v-bind:class="{'active': isActive($index)}" @click="suggestionClick($index)">
                             <a href="#">{{ suggestion }}</a>
