@@ -3,14 +3,19 @@ from flask_cors import CORS
 
 import app.data_access as dal
 
-app = Flask(__name__)
+web_folder = "../vuejs/"
+app = Flask(
+    __name__,
+    template_folder=web_folder,
+    static_folder=web_folder + 'static'
+)
 CORS(app)
 
 
 @app.route('/')
 @app.route('/index')
 def index():
-    return "Bienvenue sur le serveur back !"
+    return send_from_directory(web_folder, 'index.html')
 
 
 @app.route('/api/tweets/')
@@ -39,17 +44,3 @@ def get_tweet(hashtag):
 @app.route('/api/hashtags/')
 def get_hashtags():
     return jsonify(dal.Db_Access.get_hashtags())
-
-# @app.route('/js/<path:path>')
-# def send_js(path):
-#     return send_from_directory(web_folder + '/js', path)
-
-
-# @app.route('/css/<path:path>')
-# def send_css(path):
-#     return send_from_directory(web_folder + '/css', path)
-
-
-# @app.route('/img/<path:path>')
-# def send_img(path):
-#     return send_from_directory(web_folder + '/img', path)

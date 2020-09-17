@@ -8,7 +8,7 @@
     <!-- Load icon library -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="static/style.css">
 
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 </head>
@@ -17,12 +17,14 @@
     <div id="app" class="row">
         <div class="col-6">
             <form autocomplete="off" class="form-inline" v-on:submit.prevent="search" novalidate>
-                <div class="form-group mb-3" v-bind:class="{'open':openSuggestion}">
+                <div class="input-group input-group-lg mb-3" v-bind:class="{'open':openSuggestion}">
                     <div class="input-group-prepend">
                         <span class="input-group-text">#</span>
                     </div>
                     <input placeholder="Search hashtag" type="text" class="form-control" v-model="hashtag">
-                    <button class="btn btn-primary"><i class="fa fa-search"></i></button>
+                    <div class="input-group-append">
+                        <button class="btn btn-primary"><i class="fa fa-search"></i></button>
+                    </div>
                     <ul class="dropdown-menu" style="width:100%">
                         <li v-for="suggestion in matches" v-bind:class="{'active': isActive($index)}" @click="suggestionClick($index)">
                             <a href="#">{{ suggestion }}</a>
@@ -81,7 +83,7 @@
     <script src="https://unpkg.com/vue-chartjs/dist/vue-chartjs.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.20/lodash.min.js"></script>
 
-    <script src="script.js"></script>
+    <script src="static/script.js"></script>
 </body>
 
 </html>
