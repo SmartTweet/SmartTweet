@@ -27,28 +27,31 @@ class Tweet(declarative_base()):
 
     def __str__(self):
         return (
-            self.id_tweet_twitter + " " +
-            self.sentiment + " " +
-            self.confident_level + " " +
-            self.date + " " +
-            self.content
+            str(self.id_tweet_twitter) + " " +
+            str(self.sentiment) + " " +
+            str(self.confident_level) + " " +
+            str(self.date) + " " +
+            str(self.content)
         )
 
     @classmethod
     def from_azure_response(cls, tweet_list, azure_json):
-        try:
+        # try:
             for tweet in tweet_list:
                 for analysis in azure_json['documents']:
                     if str(tweet.id_tweet_twitter) == str(analysis['id']):
-                        tweet.set_analysis(
-                            analysis['sentiment'],
-                            analysis['confidenceScores'][analysis['sentiment']]
-                        )
+                        if analysis['sentiment'] == 'mixed':
+                            tweet.set_analysis('mixed',0.5)
+                        else:
+                            tweet.set_analysis(
+                                analysis['sentiment'],
+                                analysis['confidenceScores'][analysis['sentiment']]
+                            )
                         break
             return tweet_list
-        except KeyError:
-            print("Erreur dans la réponse de azure: " + str(azure_json))
-            print("\n\n")
+        # except KeyError as e:
+        #     print("Erreur dans la réponse de azure:\n", str(tweet), str(analysis), '\n', str(azure_json))
+        #     print("\n\n")
 
     @classmethod
     def from_raw_list(cls, raw_tweet_list: list, hashtag: str):

@@ -9,9 +9,7 @@ def get_analyses(ma_recherche: str, nbr_result: int):
 
     tweet_list = Tweet.from_raw_list(raw_tweet_list, ma_recherche)
 
-    print(len(tweet_list))
-
-    documents = azure.azure_api.from_tweetlist_to_documents(tweet_list)
+    documents = azure.azure_api.from_tweetlist_to_documents(tweet_list.copy())
     for document in documents:
         azure_json = azure.azure_api.sentiments(document)
 
@@ -21,6 +19,6 @@ def get_analyses(ma_recherche: str, nbr_result: int):
 
 
 if __name__ == "__main__":
-    tweet_list = get_analyses("macron", 100)
+    tweet_list = get_analyses("nvidia", 100)
 
     Db_Access.insert_tweet(tweet_list)
